@@ -1,6 +1,16 @@
 # Datasift Graphite
 
-A simple script to graph account related stuff in Graphite.
+A simple script to graph account-related data in Graphite.
+
+## Status
+
+WIP.
+
+## To do
+
+1. Setup logging.
+2. Installation guide.
+3. Examples.
 
 ## Metrics exposed
 

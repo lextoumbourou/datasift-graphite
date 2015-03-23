@@ -1,4 +1,4 @@
-"""Callable module provides core of datasift-graphite."""
+"""Core."""
 
 import logging
 import sys
@@ -11,26 +11,30 @@ import socket
 from datasift.client import Client
 
 
-def get_balance_metrics(balance_data, ts=time.time()):
+def get_balance_metrics(balance_data, ts=None):
     """
     Return a list of balance metrics.
 
     Parsed from the [balance](http://dev.datasift.com/docs/api/1/balance)
     endpoint.
     """
+    ts = ts or time.time()
+
     return [
         ('datasift.balance.credit', (ts, balance_data['balance']['credit']))
     ]
 
 
-def get_usage_metrics(client_data, ts=time.time()):
+def get_usage_metrics(client_data, ts=None):
     """
     Return a list of usage metrics.
 
     Parsed from the [usage](http://dev.datasift.com/docs/api/1/usage)
     endpoint.
     """
+    ts = ts or time.time()
     output = []
+
     total_streams = len(client_data['streams'].keys())
 
     output.append(
@@ -65,12 +69,14 @@ def get_dpu_data(client, streams):
     return output
 
 
-def get_dpu_metrics(dpu_data, ts=time.time()):
+def get_dpu_metrics(dpu_data, ts=None):
     """
     Return a list of DPU metrics.
 
     Expects a dict of DPU items returned from ``get_dpu_data``.
     """
+    ts = ts or time.time()
+
     output = []
 
     for name, data in dpu_data.items():

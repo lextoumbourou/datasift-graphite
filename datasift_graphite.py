@@ -129,6 +129,15 @@ def get_args():
         help=(
             'Include DPU stats? Warning: with a lot of streams this could '
             'chew through your Rate Limit credits.'), default=False, type=bool)
+    parser.add_argument(
+        '-e', '--period',
+        help="Period for stats retrieval (default 'current').",
+        choices=('current', 'day', 'hour'),
+        default='current')
+    parser.add_argument(
+        '-i', '--interval',
+        help='Interval in minutes to run stats collector (default 5 mins).',
+        default=5, type=int)
     return parser.parse_args()
 
 
@@ -140,10 +149,10 @@ def main(args):
         balance_metrics = get_balance_metrics(c.balance(), args)
         send_to_graphite(balance_metrics, args)
 
-        client_hourly = c.usage('hourly')
+        usage_data = c.usage(args.period)
 
         if args.include_dpu_stats:
-            streams = client_hourly['streams'].keys()
+            streams = usage_data['streams'].keys()
             dpu_data = get_dpu_data(c, streams)
             dpu_metrics = get_dpu_metrics(dpu_data)
 
@@ -152,7 +161,7 @@ def main(args):
         usage_metrics = get_usage_metrics(client_hourly, args)
         send_to_graphite(usage_metrics, args)
 
-        time.sleep(3600)
+        time.sleep(args.interval)
 
 
 if __name__ == '__main__':

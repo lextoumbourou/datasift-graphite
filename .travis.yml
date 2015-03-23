@@ -1,0 +1,10 @@
+language: python
+python:
+  - "2.7"
+
+install:
+  - pip install datasift flake8 flake8_docstrings nose
+
+script:
+  - nosetests
+  - flake8 .

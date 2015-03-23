@@ -179,9 +179,11 @@ def main(args):
 
         if args.include_dpu_stats:
             streams = usage_data['streams'].keys()
+            logging.debug('Preparing DPU data.')
             dpu_data = get_dpu_data(c, streams)
             logging.debug(dpu_data)
             dpu_metrics = get_dpu_metrics(dpu_data)
+            logging.debug(dpu_metrics)
 
             logging.debug('Sending dpu metrics to Graphite.')
             send_to_graphite(dpu_metrics, args)

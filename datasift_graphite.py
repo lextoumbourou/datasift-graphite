@@ -1,5 +1,9 @@
 """Callable module provides core of datasift-graphite."""
 
+from functools import partial
+from pprint import pprint
+import logging
+import sys
 import pickle
 import struct
 import time
@@ -7,6 +11,7 @@ import argparse
 import socket
 
 from datasift.client import Client
+
 
 
 def get_balance_metrics(balance_data, ts=time.time()):
@@ -125,10 +130,11 @@ def get_args():
         '-p', '--graphite-port',
         help='Graphite port', default=2004, type=int)
     parser.add_argument(
-        '-d', '--include-dpu-stats',
+        '-s', '--include-dpu-stats',
         help=(
             'Include DPU stats? Warning: with a lot of streams this could '
-            'chew through your Rate Limit credits.'), default=False, type=bool)
+            'chew through your Rate Limit credits.'),
+        default=False, action='store_true')
     parser.add_argument(
         '-e', '--period',
         help="Period for stats retrieval (default 'current').",
@@ -138,30 +144,58 @@ def get_args():
         '-i', '--interval',
         help='Interval in minutes to run stats collector (default 5 mins).',
         default=5, type=int)
+    parser.add_argument(
+        '-d', '--debug',
+        help='Run in debug mode (log stuff to stdout).',
+        default=False, action='store_true')
     return parser.parse_args()
 
 
 def main(args):
     """Main loop."""
+    if args.debug:
+        level = logging.DEBUG
+    else:
+        level = logging.INFO
+
+    logging.basicConfig(stream=sys.stdout, level=level)
+
     while True:
         c = Client(user=args.user, apikey=args.apikey)
 
+        logging.debug('Retrieving balance data.')
+        balance_data = c.balance()
+        logging.debug(balance_data)
+
+        logging.debug('Parsing balance metrics.')
         balance_metrics = get_balance_metrics(c.balance())
+        logging.debug(balance_metrics)
+
+        logging.debug('Sending balance metrics to Graphite.')
         send_to_graphite(balance_metrics, args)
 
+        logging.debug('Retrieving usage data.')
         usage_data = c.usage(args.period)
+        logging.debug(usage_data)
 
         if args.include_dpu_stats:
             streams = usage_data['streams'].keys()
             dpu_data = get_dpu_data(c, streams)
+            logging.debug(dpu_data)
             dpu_metrics = get_dpu_metrics(dpu_data)
 
+            logging.debug('Sending dpu metrics to Graphite.')
             send_to_graphite(dpu_metrics, args)
 
+        logging.debug('Parsing usage metrics.')
         usage_metrics = get_usage_metrics(usage_data)
+        logging.debug(usage_metrics)
+
+        logging.debug('Sending usage metrics to Graphite.')
         send_to_graphite(usage_metrics, args)
 
-        time.sleep(args.interval)
+        logging.debug('Sleeping for {} minutes.'.format(args.interval))
+        time.sleep(args.interval * 60)
 
 
 if __name__ == '__main__':

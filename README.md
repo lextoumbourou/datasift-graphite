@@ -8,9 +8,8 @@ WIP.
 
 ## To do
 
-1. Setup logging.
-2. Installation guide.
-3. Examples.
+* Installation guide.
+* Examples.
 
 ## Metrics exposed
 
@@ -29,7 +28,6 @@ WIP.
 * ``datasift.dpu.streams.<stream_id>.dpu`` - DPU value for a stream.
 * ``datasift.dpu.streams.<stream_id>.count`` - DPU count for a stream.
 * ``datasift.dpu.streams.<stream_id>.price`` - (DPU count * price per DPU) for a stream.
-
 * ``datasift.dpu.streams.<stream_id>.targets.<target_name>.dpu`` - DPU count per stream, per target.
 * ``datasift.dpu.streams.<stream_id>.targets.<target_name>.count`` - DPU count per stream, per target.
 * ``datasift.dpu.streams.<stream_id>.targets.<target_name>.price`` - DPU count per stream, per target.

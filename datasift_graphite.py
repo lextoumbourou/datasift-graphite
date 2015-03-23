@@ -9,7 +9,7 @@ import socket
 from datasift.client import Client
 
 
-def get_balance_metrics(balance_data, args, ts=time.time()):
+def get_balance_metrics(balance_data, ts=time.time()):
     """
     Return a list of balance metrics.
 
@@ -146,7 +146,7 @@ def main(args):
     while True:
         c = Client(user=args.user, apikey=args.apikey)
 
-        balance_metrics = get_balance_metrics(c.balance(), args)
+        balance_metrics = get_balance_metrics(c.balance())
         send_to_graphite(balance_metrics, args)
 
         usage_data = c.usage(args.period)
@@ -158,7 +158,7 @@ def main(args):
 
             send_to_graphite(dpu_metrics, args)
 
-        usage_metrics = get_usage_metrics(client_hourly, args)
+        usage_metrics = get_usage_metrics(usage_data)
         send_to_graphite(usage_metrics, args)
 
         time.sleep(args.interval)

@@ -7,7 +7,6 @@ import struct
 import time
 import argparse
 import socket
-import threading
 
 from datasift.client import Client
 

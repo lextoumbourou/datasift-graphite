@@ -1,3 +1,5 @@
+"""Callable module provides core of datasift-graphite."""
+
 import pickle
 import struct
 import time
@@ -8,8 +10,11 @@ from datasift.client import Client
 
 
 def get_balance_metrics(balance_data, args, ts=time.time()):
-    """Return a list of metrics parsed from the [balance](
-        http://dev.datasift.com/docs/api/1/balance) endpoint.
+    """
+    Return a list of balance metrics.
+
+    Parsed from the [balance](http://dev.datasift.com/docs/api/1/balance)
+    endpoint.
     """
     return [
         ('datasift.balance.credit', (ts, balance_data['balance']['credit']))
@@ -17,8 +22,11 @@ def get_balance_metrics(balance_data, args, ts=time.time()):
 
 
 def get_usage_metrics(client_data, ts=time.time()):
-    """Return a list of metrics parsed from the [usage](
-        http://dev.datasift.com/docs/api/1/usage) endpoint.
+    """
+    Return a list of usage metrics.
+
+    Parsed from the [usage](http://dev.datasift.com/docs/api/1/usage)
+    endpoint.
     """
     output = []
     total_streams = len(client_data['streams'].keys())
@@ -41,7 +49,8 @@ def get_usage_metrics(client_data, ts=time.time()):
 
 
 def get_dpu_data(client, streams):
-    """Return a list of streams and their DPU credits.
+    """
+    Return a list of streams and their DPU credits.
 
     Warning: this may chew through you Rate Limiting credits, if you
     have enough streams.
@@ -54,8 +63,10 @@ def get_dpu_data(client, streams):
 
 
 def get_dpu_metrics(dpu_data, ts=time.time()):
-    """Parse a dict of DPU items returned from ``get_dpu_data``
-    as a list of metrics.
+    """
+    Return a list of DPU metrics.
+
+    Expects a dict of DPU items returned from ``get_dpu_data``.
     """
     output = []
 
@@ -82,9 +93,12 @@ def get_dpu_metrics(dpu_data, ts=time.time()):
 
 
 def send_to_graphite(metrics, args):
-    """Send data to Graphite using the [pickle protocol](
-        http://graphite.readthedocs.org/en/1.0/
-        feeding-carbon.html#the-pickle-protocol).
+    """
+    Send a list of metrics to Graphite.
+
+    Uses the [pickle protocol](
+    http://graphite.readthedocs.org/en/1.0/
+    feeding-carbon.html#the-pickle-protocol).
     """
     payload = pickle.dumps(metrics)
     header = struct.pack('!L', len(payload))
@@ -120,7 +134,6 @@ def get_args():
 
 def main(args):
     """Main loop."""
-
     while True:
         c = Client(user=args.user, apikey=args.apikey)
 

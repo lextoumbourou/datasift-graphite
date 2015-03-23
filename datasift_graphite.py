@@ -1,7 +1,5 @@
 """Callable module provides core of datasift-graphite."""
 
-from functools import partial
-from pprint import pprint
 import logging
 import sys
 import pickle
@@ -11,7 +9,6 @@ import argparse
 import socket
 
 from datasift.client import Client
-
 
 
 def get_balance_metrics(balance_data, ts=time.time()):

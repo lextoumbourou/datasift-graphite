@@ -1,10 +1,8 @@
 # Datasift Graphite
 
-A simple script to graph account-related data in Graphite.
+[![Build Status](https://travis-ci.org/lextoumbourou/datasift-graphite.svg?branch=master)](https://travis-ci.org/lextoumbourou/datasift-graphite)
 
-## Status
-
-WIP.
+Graph your Datasift account metrics in Graphite.
 
 ## To do
 

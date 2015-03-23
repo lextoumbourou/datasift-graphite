@@ -26,9 +26,9 @@ def test_get_dpu_metrics():
         sorted([
             ('datasift.dpu.streams.stream-1.dpu', (ts, 0.6)),
             ('datasift.dpu.streams.stream-1.count', (ts, 6)),
-            ('datasift.dpu.streams.stream-1.targets.interaction.title.count',
+            ('datasift.dpu.streams.stream-1.targets.interaction-title.count',
              (ts, 1)),
-            ('datasift.dpu.streams.stream-1.targets.interaction.title.dpu',
+            ('datasift.dpu.streams.stream-1.targets.interaction-title.dpu',
              (ts, 0.1))
         ])
     )

@@ -7,6 +7,7 @@ import struct
 import time
 import argparse
 import socket
+import threading
 
 from datasift.client import Client
 
@@ -44,6 +45,7 @@ def get_usage_metrics(client_data, ts=time.time()):
             continue
 
         for license_name, license_value in data['licenses'].items():
+            license_name = license_name.replace('.', '-')
             license_key = '{}.licenses.{}'.format(key, license_name)
             output.append((license_key, (ts, license_value)))
 
@@ -82,6 +84,7 @@ def get_dpu_metrics(dpu_data, ts=time.time()):
         for stream_name, stream_data in (
             data['detail']['in']['targets'].items()
         ):
+            stream_name = stream_name.replace('.', '-')
             output.append((
                 'datasift.dpu.streams.{}.targets.{}.dpu'.format(
                     name, stream_name),

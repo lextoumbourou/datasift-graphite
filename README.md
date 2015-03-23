@@ -23,9 +23,12 @@ Graph your Datasift account metrics in Graphite.
 
 ### dpu
 
+
 * ``datasift.dpu.streams.<stream_id>.dpu`` - DPU value for a stream.
 * ``datasift.dpu.streams.<stream_id>.count`` - DPU count for a stream.
 * ``datasift.dpu.streams.<stream_id>.price`` - (DPU count * price per DPU) for a stream.
 * ``datasift.dpu.streams.<stream_id>.targets.<target_name>.dpu`` - DPU count per stream, per target.
 * ``datasift.dpu.streams.<stream_id>.targets.<target_name>.count`` - DPU count per stream, per target.
 * ``datasift.dpu.streams.<stream_id>.targets.<target_name>.price`` - DPU count per stream, per target.
+
+*Note: for targets and licenses, ``.`` will be replaced with ``-``, eg ``links.meta.description`` becomes ``links-meta-description``.*

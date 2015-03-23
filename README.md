@@ -12,7 +12,7 @@ A simple script to graph account related stuff in Graphite.
 
 * ``datasift.usage.total_streams`` - Total number of streams.
 * ``datasift.usage.streams.<stream_id>.seconds`` - Seconds connected.
-* ``datasift.usage.streams.<stream_id>.licenses.<type_name>`` - number of objects of each type delivered.
+* ``datasift.usage.streams.<stream_id>.licenses.<license_name>`` - number of objects of each type delivered.
 
 ### dpu
 

@@ -7,25 +7,37 @@ import socket
 from datasift.client import Client
 
 
-def get_balance_metrics(balance, args, ts=time.time()):
+def get_balance_metrics(balance_data, args, ts=time.time()):
     """Return a list of metrics parsed from the [balance](
         http://dev.datasift.com/docs/api/1/balance) endpoint.
     """
     return [
-        ('datasift.balance.credit', (ts, balance['balance']['credit']))
+        ('datasift.balance.credit', (ts, balance_data['balance']['credit']))
     ]
 
 
-def get_usage_metrics(client, args, ts=time.time()):
+def get_usage_metrics(client_data, ts=time.time()):
     """Return a list of metrics parsed from the [usage](
         http://dev.datasift.com/docs/api/1/usage) endpoint.
     """
     output = []
-    total_streams = len(client['streams'].keys())
-    output.append(
-        ('datasift.streams.total_streams', (ts, total_streams)))
+    total_streams = len(client_data['streams'].keys())
 
-    pass
+    output.append(
+        ('datasift.usage.total_streams', (ts, total_streams)))
+
+    for name, data in client_data['streams'].items():
+        key = 'datasift.usage.streams.{}'.format(name)
+        output.append(('{}.seconds'.format(key), (ts, data['seconds'])))
+
+        if not data.get('licenses'):
+            continue
+
+        for license_name, license_value in data['licenses'].items():
+            license_key = '{}.licenses.{}'.format(key, license_name)
+            output.append((license_key, (ts, license_value)))
+
+    return output
 
 
 def get_dpu_data(client, streams):
@@ -106,24 +118,30 @@ def get_args():
     return parser.parse_args()
 
 
-def main():
+def main(args):
     """Main loop."""
-    args = get_args()
-    c = Client(user=args.user, apikey=args.apikey)
 
-    balance_metrics = get_balance_metrics(c.balance(), args)
-    send_to_graphite(balance_metrics, args)
+    while True:
+        c = Client(user=args.user, apikey=args.apikey)
 
-    if args.include_dpu_stats:
+        balance_metrics = get_balance_metrics(c.balance(), args)
+        send_to_graphite(balance_metrics, args)
+
         client_hourly = c.usage('hourly')
-        streams = client_hourly['streams'].keys()
-        dpu_data = get_dpu_data(c, streams)
-        dpu_metrics = get_dpu_metrics(dpu_data)
-        send_to_graphite(dpu_metrics, args)
 
-    usage_metrics = get_usage_metrics(client_hourly, args)
-    send_to_graphite(usage_metrics, args)
+        if args.include_dpu_stats:
+            streams = client_hourly['streams'].keys()
+            dpu_data = get_dpu_data(c, streams)
+            dpu_metrics = get_dpu_metrics(dpu_data)
+
+            send_to_graphite(dpu_metrics, args)
+
+        usage_metrics = get_usage_metrics(client_hourly, args)
+        send_to_graphite(usage_metrics, args)
+
+        time.sleep(3600)
 
 
 if __name__ == '__main__':
-    main()
+    args = get_args()
+    main(args)

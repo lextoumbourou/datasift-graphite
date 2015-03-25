@@ -10,7 +10,6 @@ setup(
     name='datasift-graphite',
     version='1.0',
     description='Graph your Datasift account metrics in Graphite.',
-    long_description=open('README.md').read(),
     author='Lex Toumbourou',
     author_email='lextoumbourou@gmail.com',
     url='https://github.com/lextoumbourou/datasift-graphite',

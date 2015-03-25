@@ -7,7 +7,7 @@ from setuptools import setup
 
 
 setup(
-    name='datasit-graphite',
+    name='datasift-graphite',
     version='1.0',
     description='Graph your Datasift account metrics in Graphite.',
     long_description=open('README.md').read(),

@@ -44,17 +44,11 @@ You can use whatever you like, though. I won't be offended.
 
 ## Examples
 
-* Keep an eye on your Datasift PAYG credits:
+* Keep an eye on your Datasift PAYG credits: ```datasift.balance.credit```
 
-    ```datasift.balance.credit```
+* Track your Datasift usage per object: ``sumSeriesWithWildcards(aliasByNode(datasift.usage.streams.*.licenses.*, 5), 1)``
 
-* Track your Datasift usage per object:
-
-     ``sumSeriesWithWildcards(aliasByNode(datasift.usage.streams.*.licenses.*, 5), 1)``
-
-* Track your DPU costs:
-
-     ``sumSeriesWithWildcards(aliasByNode(datasift.dpu.streams.*.dpu, 4), 1)``
+* Track your DPU costs: ``sumSeriesWithWildcards(aliasByNode(datasift.dpu.streams.*.dpu, 4), 1)``
 
 *Note: I'm a bit of a Graphite noob, at the time of writing, so if you've got some better ideas, hit me up.*
 

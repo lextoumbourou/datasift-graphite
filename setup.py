@@ -8,7 +8,7 @@ from setuptools import setup
 
 setup(
     name='datasift-graphite',
-    version='1.0',
+    version='1.1',
     description='Graph your Datasift account metrics in Graphite.',
     author='Lex Toumbourou',
     author_email='lextoumbourou@gmail.com',

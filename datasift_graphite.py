@@ -1,5 +1,6 @@
 """Core."""
 
+import threading
 import logging
 import sys
 import pickle
@@ -55,16 +56,30 @@ def get_usage_metrics(client_data, ts=None):
     return output
 
 
+def _update_dpu_object(output, client, stream):
+    output[stream] = client.dpu(stream)
+
+
 def get_dpu_data(client, streams):
     """
     Return a list of streams and their DPU credits.
+
+    Creates a new thread for each API call.
 
     Warning: this may chew through you Rate Limiting credits, if you
     have enough streams.
     """
     output = {}
+
+    thread_list = []
     for stream in streams:
-        output[stream] = client.dpu(stream)
+        t = threading.Thread(
+            target=_update_dpu_object, args=(output, client, stream))
+        t.start()
+        thread_list.append(t)
+
+    for thread in thread_list:
+        thread.join()
 
     return output
 

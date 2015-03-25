@@ -171,8 +171,10 @@ def get_args():
     return parser.parse_args()
 
 
-def main(args):
+def main():
     """Main loop."""
+    args = get_args()
+
     if args.debug:
         level = logging.DEBUG
     else:
@@ -221,5 +223,4 @@ def main(args):
 
 
 if __name__ == '__main__':
-    args = get_args()
-    main(args)
+    main()

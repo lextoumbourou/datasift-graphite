@@ -14,7 +14,7 @@ setup(
     author_email='lextoumbourou@gmail.com',
     url='https://github.com/lextoumbourou/datasift-graphite',
     license='MIT License',
-    py_modules = ['datasift_graphite'],
+    py_modules=['datasift_graphite'],
     install_requires=['datasift'],
     entry_points={
         'console_scripts': ['datasift-graphite = datasift_graphite:main'],

@@ -1,9 +1,9 @@
 # Datasift Graphite
 
 [![Build Status](https://travis-ci.org/lextoumbourou/datasift-graphite.svg?branch=master)](https://travis-ci.org/lextoumbourou/datasift-graphite)
-[![Latest Version](https://pypip.in/version/datasift-graphite/badge.svg)](https://pypi.python.org/pypi/datasift-graphite/)
-[![License](https://pypip.in/license/datasift-graphite/badge.svg)](https://pypi.python.org/pypi/datasift-graphite/)
-[![Downloads](https://pypip.in/download/datasift-graphite/badge.svg)](https://pypi.python.org/pypi/datasift-graphite/)
+[![Latest Version](https://img.shields.io/pypi/v/datasift-graphite.svg)](https://pypi.python.org/pypi/datasift-graphite/)
+[![License](https://img.shields.io/pypi/l/datasift-graphite.svg)](https://pypi.python.org/pypi/datasift-graphite/)
+[![Downloads](https://img.shields.io/pypi/dm/datasift-graphite.svg)](https://pypi.python.org/pypi/datasift-graphite/)
 
 Graph your Datasift account metrics in Graphite.
 
